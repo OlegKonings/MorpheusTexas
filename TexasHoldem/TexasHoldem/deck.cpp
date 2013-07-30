@@ -102,9 +102,9 @@ Psi TexasPoker::get_value_hand(const set<card> &S){//will have 5 cards, will ret
 		}
 		if(freqValue[i]>0){//keep track of all values seen and highcard
 
-			highcard=i;//keep track of highcard
+			highcard=i;//keep track of highcard by using a bitmask which will carry the value of the kickers cards in case of a tie
 			if(freqValue[i]==1){
-				raw_value|=(1<<(i-1));
+				raw_value|=(1<<(i-1));//i ranges from 2-14, so will use (i-1) for the bitmasks
 			}
 			if(freqValue[i]==2){//there is a pair, store the value and if there is another, store that value
 				if(pair2a==-1)pair2a=i;
@@ -115,7 +115,7 @@ Psi TexasPoker::get_value_hand(const set<card> &S){//will have 5 cards, will ret
 	}
 
 	int max_freqs=-1,whichs=-1;
-	for(int i=0;i<4;i++){//get info for the suits in hand
+	for(int i=0;i<DIF_SUITS;i++){//get info for the suits in hand
 		if(freqSuit[i]>max_freqs){
 			max_freqs=freqSuit[i];
 			whichs=i;
@@ -332,6 +332,9 @@ string get_error_string(const RETURN_CODE &TEMP){
 			break;
 		case NOT_ENOUGH_DATA:
 			ret="Error #7: Not enough player or Deck Data\n";
+			break;
+		case DATA_ENTRY_ERROR:
+			ret="Error #8: Manual Data entry Error\n";
 			break;
 		default:
 			ret="";

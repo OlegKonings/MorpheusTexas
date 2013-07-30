@@ -53,8 +53,15 @@ int main(int argc, char **argv){
 				ok=false;
 			}
 		}
-		if(RET==NO_ERRORS){//all was error-free, so show ranking list
+		if(RET==NO_ERRORS && ok && line_num>1){//all was error-free, so show ranking list
 			CurGame.show_ranking();
+		}else{
+			if(RET!=NO_ERRORS){
+				cout<<get_error_string(RET);
+			}else{//means that the data entry had a problem(like an empty line)
+				RET=DATA_ENTRY_ERROR;
+				cout<<get_error_string(RET);
+			}
 		}
 	}else if(argc>1){//read from file
 		ifstream testfile;
@@ -83,12 +90,17 @@ int main(int argc, char **argv){
 					ok=false;
 				}
 			}
-		}
-		testfile.close();
-		if(ok && RET==NO_ERRORS && line_num>0){
-			CurGame.show_ranking();
-		}else if(ok && RET==NO_ERRORS){//means no player data entered
-			RET=NOT_ENOUGH_DATA;
+			testfile.close();
+			if(ok && RET==NO_ERRORS && line_num>0){
+				CurGame.show_ranking();
+			}else if(ok && RET==NO_ERRORS){//means no player data entered
+				RET=NOT_ENOUGH_DATA;
+				cout<<get_error_string(RET);
+				ok=false;
+			}
+
+		}else{//means it could not find the file with that name in the current directory
+			RET=FILE_NOT_FOUND;
 			cout<<get_error_string(RET);
 			ok=false;
 		}
