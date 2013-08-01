@@ -201,10 +201,10 @@ Psi TexasPoker::get_value_hand(const set<card> &S){//will have 5 cards, will ret
 		b=0;
 		if(pair2a>pair2b){//make sure higher pair value has much larger weight
 			hand+=(" with the high pair of "+CARDNAMES[pair2a]+" , the other pair of "+CARDNAMES[pair2b]+" and the last card "+CARDNAMES[c]);
-			b=pair2a*2663+pair2b*2557;
+			b=pair2a*2663+pair2b*257;
 		}else{
 			hand+=(" with the high pair of "+CARDNAMES[pair2b]+" , the other pair of "+CARDNAMES[pair2a]+" and the last card "+CARDNAMES[c]);
-			b=pair2b*2663+pair2a*2557;
+			b=pair2b*2663+pair2a*257;
 		}
 		return make_pair(hand,4000000+b+c);
 	}
